@@ -258,7 +258,8 @@ var btn = document.getElementById('alert-buttons');
 btn.addEventListener('click', function(e){
     var button = e.target;
     var text = document.getElementById('alert-form').value;
-
+    
+    //создаю блок с алерт c аттрибутами
     var newAlert = document.createElement("DIV");
     newAlert.setAttribute("id", num);
     newAlert.setAttribute("class", ("fade-in alert alert-" + button.value));
@@ -268,22 +269,17 @@ btn.addEventListener('click', function(e){
     
     num++;
 
+    //создание блока html
     var textBlock = '<a href="#" class="close" title="close" onclick="this.parentNode.remove()">&times;</a>' +
     '<strong>' + button.value + '!</strong> ' + text + '</div>';
 
+    // внедряем алерт в dom
     newAlert.innerHTML = textBlock;
 
     document.body.appendChild(newAlert); 
-    a = '"' + num + '"';
 
+    //таймер на изчезание алерта
     setTimeout(function(){newAlert.remove();}, 10000);
-    console.log(a);
-
-
-
-
-
-
     
 });
 
@@ -293,13 +289,35 @@ btn.addEventListener('click', function(e){
     </li>
     <li>
 <h4><b class="h2 text-danger">*</b>
-Сделать кнопочку <i class="text-info">scroll to top</i>, она должна появляться когда пользователь проскролил страницу на размер одного видимого экрана.
+Сделать кнопочку <i class="text-info" onclick="return up()">scroll to top</i>, она должна появляться когда пользователь проскролил страницу на размер одного видимого экрана.
 Кнопочку нужно аккуратно стилизовать.
 </h4>
 <br />
 
 <script>
 // script for task #4
+
+var t;
+function up() {
+  var top = Math.max(document.body.scrollTop,document.documentElement.scrollTop);
+  if(top > 0) {
+    window.scrollBy(0,-100);
+    t = setTimeout('up()',20);
+  } else clearTimeout(t);
+  return false;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 </script>
     </li>
     <li>
