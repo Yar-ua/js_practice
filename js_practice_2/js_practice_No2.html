@@ -247,10 +247,14 @@ Alert должен плавно появляться в верхнем прав�
 
 <script>
 // script for task #3
+// это для установки id алерта (в случае когда их много)
 var num = 0;
+// для задания стиля алерта top
 var strafe = 10;
+
 var btn = document.getElementById('alert-buttons');
 
+// привязываем скрипт к кнопке
 btn.addEventListener('click', function(e){
     var button = e.target;
     var text = document.getElementById('alert-form').value;
@@ -270,8 +274,10 @@ btn.addEventListener('click', function(e){
     newAlert.innerHTML = textBlock;
 
     document.body.appendChild(newAlert); 
+    a = '"' + num + '"';
 
-
+    setTimeout(function(){newAlert.remove();}, 10000);
+    console.log(a);
 
 
 
@@ -316,6 +322,7 @@ btn.addEventListener('click', function(e){
 </ol>
 <br><br><br>
 
+<!--
 <div class="alert alert-success" style="top: 10px">
   <a href="#" class="close" title="close" onclick="this.parentNode.remove()">&times;</a>
   <strong>Success!</strong> Indicates a successful or positive action.
@@ -335,7 +342,7 @@ btn.addEventListener('click', function(e){
   <a href="#" class="close" title="close" onclick='this.parentNode.remove()'>&times;</a>
   <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
 </div>
-
+-->
 
 
 </body>
