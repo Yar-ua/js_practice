@@ -213,25 +213,28 @@ Alert должен плавно появляться в верхнем прав�
 <script>
 // script for task #3
 var num = 0;
+var strafe = 10;
 var btn = document.getElementById('alert-buttons');
 
 btn.addEventListener('click', function(e){
     var button = e.target;
     var text = document.getElementById('alert-form').value;
 
-    console.log(text);
-    console.log(button.value);
-
-    //document.body
-
-
     var newAlert = document.createElement("DIV");
     newAlert.setAttribute("id", num);
+    newAlert.setAttribute("class", ("alert alert-"+ button.value));
+    newAlert.setAttribute("style", ("top:" + strafe + "px"));
+    strafe = strafe + 70;
+    console.log(strafe);
+    
     num++;
 
-    //var textBlock = '<div class="item">' + '<h4>Заголовок #' + i + '</h4>' + '<p>' + text + '</p></div>';
-    var textBlock = 'asdasdsds'
-    document.body.innerHTML = textBlock;
+    var textBlock = '<a href="#" class="close" title="close" onclick="this.parentNode.remove()">&times;</a>' +
+    '<strong>' + button.value + '!</strong> ' + text + '</div>';
+
+    newAlert.innerHTML = textBlock;
+
+    document.body.appendChild(newAlert); 
 
 
 
@@ -279,29 +282,26 @@ btn.addEventListener('click', function(e){
 <br><br><br>
 
 <div class="alert alert-success" style="top: 10px">
-  <a href="#" class="close" title="close" onclick=closeAlert()>&times;</a>
+  <a href="#" class="close" title="close" onclick="this.parentNode.remove()">&times;</a>
   <strong>Success!</strong> Indicates a successful or positive action.
 </div>
 
 <div class="alert alert-info" style="top: 70px">
-  <a href="#" class="close" title="close" onclick=closeAlert()>&times;</a>
+  <a href="#" class="close" title="close" onclick='this.parentNode.remove()'>&times;</a>
   <strong>Info!</strong> Indicates a neutral informative change or action. With long long text
 </div>
 
 <div class="alert alert-warning" style="top: 150px">
-  <a href="#" class="close" title="close" onclick=closeAlert()>&times;</a>
+  <a href="#" class="close" title="close" onclick='this.parentNode.remove()'>&times;</a>
   <strong>Warning!</strong> Indicates a warning that might need attention.
 </div>
 
 <div class="alert alert-danger fade in" style="top: 210px">
-  <a href="#" class="close" title="close" onclick=closeAlert()>&times;</a>
+  <a href="#" class="close" title="close" onclick='this.parentNode.remove()'>&times;</a>
   <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
 </div>
 
-<script>
-function closeAlert() { this.parentNode.remove(); }
-    
-</script>
+
 
 </body>
 </html>
