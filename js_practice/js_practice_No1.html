@@ -1,0 +1,158 @@
+<html>
+  <body>
+	_____+++++ My JS practice No 1
+  </body>
+</html>
+
+
+<script>
+
+
+// #1
+    function sequence(start, step) {
+        // здесь ваш код
+        if (start == undefined) {
+            start = 0;
+        }
+        if (step == undefined) {
+            step = 1;
+        }
+        return function(){
+            returned = start;
+            start = start + step;  
+            return returned;
+        }
+    }
+
+
+// #2
+    function take(fn, count) {
+        array = [];
+        for (var i = 0; i < count; i++) {
+            array[i] = fn();
+        }
+        return array;
+    }
+
+
+// #3
+    function square(x) { return x * x; };
+    function map(fn, array) {
+        newArray = [];
+        for (var i = 0; i < array.length; i++) {
+            newArray[i] = fn(array[i]);
+        }
+        return newArray;
+
+    }
+
+
+// #4
+    function fmap(a, gen){
+        return function (...args) {
+            return a(gen(...args));
+        }
+    };
+
+
+// #5
+    function partial(fn, ...values) {
+        return function(...args) {
+
+            return fn.apply(this, values.concat(args));
+        };
+    };
+
+
+
+// #6 
+
+function partialAny(func,...args){
+    var args = Array.from(arguments);
+    args.splice(0,1);
+    return function(){
+        var arrInside = Array.from(arguments);
+        var j=0;
+        outer: for (i=0; i<args.length; i++){
+            if(args[i] === undefined){
+                while (j<arrInside.length){
+                args = args.fill(arrInside[j], i, i+1);
+                j++;
+                continue outer;
+                };
+            };
+        };
+        return  func.apply(this, args);
+    };
+};
+
+
+function test(a, b, c, d, e){
+    return "a=" + a + ", b=" + b + ", c=" +  c + ", d=" + d + ", e=" +  e ;
+}
+
+var test1_3 = partialAny(test, 1, undefined, 3, 88, undefined);
+console.log(test1_3(57, 15, 33));
+
+var test1_5 = partialAny(test, 66, undefined, 3, undefined, undefined);
+console.log(test1_5(10, 55, 33));
+
+    //
+    //
+
+
+
+// #7
+    function bind(fn, context) {
+      // обрезаем ненужные аргументы (функцию и контекст)
+      var bindArgs = [].slice.call(arguments, 2);
+      return function() {
+        // здесь все аргументы будут необходимы
+        var fnArgs = [].slice.call(arguments);
+        // собираем все 
+        return fn.apply(context, bindArgs.concat(fnArgs));
+      };
+    };
+
+
+
+// #8
+
+    var characters = [
+        { 'name': 'barney', 'age': 36 },
+        { 'name': 'fred', 'age': 40 }
+    ];
+
+    function pluck(objects, fieldName) {
+        var arr = [];
+        for (var i = 0; i < objects.length; i++) {
+            //console.log(a[i][fieldName]);
+            arr.push(objects[i][fieldName]);
+        };
+        //return arr;
+        console.log(arr);
+    };
+
+
+// #9
+
+    function filter (arr, fn) {
+        newarr = [];
+        for (var i = 0; i < arr.length; i++) {
+            if (fn(arr[i]) == true) {
+                newarr.push(arr[i]);
+            };
+        };
+        return newarr;
+    };
+
+
+// #10
+
+    function count (obj) {
+        // console.log(Object.keys(obj).length);
+        return Object.keys(obj).length;
+    };
+
+
+</script>
