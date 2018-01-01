@@ -76,6 +76,41 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.5);
             z-index: 10;
         }
+
+
+        /* */
+        @-webkit-keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fade-in {
+            -webkit-animation: fadeIn .5s ease-in 1 forwards;
+            animation: fadeIn .5s ease-in 1 forwards;
+            opacity: 0;
+        }
+
+        .is-paused {
+            -webkit-animation-play-state: paused;
+            animation-play-state: paused;
+        }
+
+
+
+        .fade-in {
+            -webkit-animation: fadeIn .5s ease-in 1 forwards;
+            animation: fadeIn .5s ease-in 1 forwards;
+            opacity: 0;
+        }
+
+
     </style>
     
 </head>
@@ -222,7 +257,7 @@ btn.addEventListener('click', function(e){
 
     var newAlert = document.createElement("DIV");
     newAlert.setAttribute("id", num);
-    newAlert.setAttribute("class", ("alert alert-"+ button.value));
+    newAlert.setAttribute("class", ("fade-in alert alert-" + button.value));
     newAlert.setAttribute("style", ("top:" + strafe + "px"));
     strafe = strafe + 70;
     console.log(strafe);
