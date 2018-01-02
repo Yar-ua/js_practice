@@ -392,67 +392,7 @@ cube.onmousedown = function(e) { // 1. отследить нажатие
 */
 
 
-var rectangles = document.getElementsByClassName("dragable");
 
-var panel = document.getElementsByClassName('panel')[0];
-var margin = 10;
-
-function choseType(e, clause1, clause2) {
-    if (e.type == clause1) {
-        return e;
-    } else if (e.type == clause2) {
-        console.log('touchpad');
-        e.preventDefault();
-        return e.targetTouches[0];
-    } else {
-        console.log("fuck");
-    }
-}
-
-function moveTo(e) {
-    var chosenTarget = choseType(e, "mousedown", "touchstart");
-    var initX = chosenTarget.pageX;
-    var initY = chosenTarget.pageY;
-
-    var initOx = parseFloat(chosenTarget.target.style.left);
-    var initOy = parseFloat(chosenTarget.target.style.top);
-    chosenTarget.target.classList.add("move");
-
-    function calcPoints(event) {
-        var movedTarget = choseType(event, "mousemove", "touchmove");
-        var RightEdge = panel.offsetWidth - margin - movedTarget.target.offsetWidth;
-        var LeftEdge = margin;
-        var UpperEdge = margin;
-        var LowerEdge = panel.offsetHeight - movedTarget.target.offsetHeight - margin;
-        var newX = initOx + movedTarget.pageX - initX;
-        var newY = initOy + movedTarget.pageY - initY;
-        if (newX <= RightEdge && newX >= LeftEdge) {
-            chosenTarget.target.style.left = newX + 'px';
-        }
-        if (newY < LowerEdge && newY > UpperEdge) {
-            chosenTarget.target.style.top = newY + 'px';
-        }
-    }
-
-    document.body.addEventListener('mousemove', calcPoints, false);
-    document.body.addEventListener('touchmove', calcPoints, false);
-
-    document.body.addEventListener('mouseup', function() {
-        e.target.classList.remove('move');
-        document.body.removeEventListener('mousemove', calcPoints, false)}, false);
-
-    document.body.addEventListener('touchend', function() {
-        e.targetTouches[0].target.classList.remove('move');
-        document.body.removeEventListener('touchmove', calcPoints, false) }, false )
-}
-
-
-
-for ( i=0; i< rectangles.length; i++) {
-    rectangles[i].addEventListener('mousedown', moveTo);
-    rectangles[i].addEventListener('touchstart', moveTo);
-
-}
 
 
 
