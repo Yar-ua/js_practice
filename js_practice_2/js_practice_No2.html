@@ -334,7 +334,6 @@ function up() {
 
 function scrollFunction() {
     var a = screen.height - 500;
-    console.log(a);
     if (document.body.scrollTop > a || document.documentElement.scrollTop > a) {
         document.getElementById("icon").style.display = "block";
     } else {
@@ -353,15 +352,111 @@ window.onscroll = function() {scrollFunction()};
 Во время перемещения элемента ему должен присваиваться класс <code>move</code>. Перетаскивание эелементов должно так де работать и на мобильных устройствах.</h4>
 <br />
 
-<div class="panel box">
-<div class="dragable red" style="left: 250px;top: 28px;"></div>
+<div class="panel box" id="panel box">
+<div class="dragable red" id="cube" style="left: 250px;top: 28px;"></div>
 <div class="dragable green" style="left: 50px;top: 68px;"></div>
 <div class="dragable blue" style="left: 350px;top: 287px;"></div>
-<div class="dragable purple move" style="left: 70px;top: 28px;"></div>
+<div class="dragable purple" style="left: 70px;top: 28px;"></div>
 </div>
+
 
 <script>
 // script for task #5
+
+/* //var panel = document.getElementById('panel box');
+var cube = document.getElementById('cube');
+
+cube.onmousedown = function(e) { // 1. отследить нажатие
+
+    cube.style.position = 'absolute';
+    moveAt(e);
+
+    document.body.appendChild(cube);
+
+    cube.style.zIndex = 1000; // показывать над другими элементами
+
+    function moveAt(e) {
+        cube.style.left = e.pageX - cube.offsetWidth / 2 + 'px';
+        cube.style.top = e.pageY - cube.offsetHeight / 2 + 'px';
+    }
+
+    document.onmousemove = function(e) {
+        moveAt(e);
+    }
+
+    cube.onmouseup = function() {
+        document.onmousemove = null;
+        cube.onmouseup = null;
+    }
+}
+*/
+
+
+var rectangles = document.getElementsByClassName("dragable");
+
+var panel = document.getElementsByClassName('panel')[0];
+var margin = 10;
+
+function choseType(e, clause1, clause2) {
+    if (e.type == clause1) {
+        return e;
+    } else if (e.type == clause2) {
+        console.log('touchpad');
+        e.preventDefault();
+        return e.targetTouches[0];
+    } else {
+        console.log("fuck");
+    }
+}
+
+function moveTo(e) {
+    var chosenTarget = choseType(e, "mousedown", "touchstart");
+    var initX = chosenTarget.pageX;
+    var initY = chosenTarget.pageY;
+
+    var initOx = parseFloat(chosenTarget.target.style.left);
+    var initOy = parseFloat(chosenTarget.target.style.top);
+    chosenTarget.target.classList.add("move");
+
+    function calcPoints(event) {
+        var movedTarget = choseType(event, "mousemove", "touchmove");
+        var RightEdge = panel.offsetWidth - margin - movedTarget.target.offsetWidth;
+        var LeftEdge = margin;
+        var UpperEdge = margin;
+        var LowerEdge = panel.offsetHeight - movedTarget.target.offsetHeight - margin;
+        var newX = initOx + movedTarget.pageX - initX;
+        var newY = initOy + movedTarget.pageY - initY;
+        if (newX <= RightEdge && newX >= LeftEdge) {
+            chosenTarget.target.style.left = newX + 'px';
+        }
+        if (newY < LowerEdge && newY > UpperEdge) {
+            chosenTarget.target.style.top = newY + 'px';
+        }
+    }
+
+    document.body.addEventListener('mousemove', calcPoints, false);
+    document.body.addEventListener('touchmove', calcPoints, false);
+
+    document.body.addEventListener('mouseup', function() {
+        e.target.classList.remove('move');
+        document.body.removeEventListener('mousemove', calcPoints, false)}, false);
+
+    document.body.addEventListener('touchend', function() {
+        e.targetTouches[0].target.classList.remove('move');
+        document.body.removeEventListener('touchmove', calcPoints, false) }, false )
+}
+
+
+
+for ( i=0; i< rectangles.length; i++) {
+    rectangles[i].addEventListener('mousedown', moveTo);
+    rectangles[i].addEventListener('touchstart', moveTo);
+
+}
+
+
+
+
 </script>
     </li>
 </ol>
