@@ -273,21 +273,21 @@ Alert должен плавно появляться в верхнем прав�
 // это для установки id алерта (в случае когда их много)
 var num = 0;
 // для задания стиля алерта top
-var strafe = 10;
 
 var btn = document.getElementById('alert-buttons');
 
 // привязываем скрипт к кнопке
 btn.addEventListener('click', function(e){
+
     var button = e.target;
     var text = document.getElementById('alert-form').value;
-    
+    var strafe = window.pageYOffset + num * 70;
     //создаю блок с алерт c аттрибутами
     var newAlert = document.createElement("DIV");
     newAlert.setAttribute("id", num);
     newAlert.setAttribute("class", ("fade-in alert alert-" + button.value));
     newAlert.setAttribute("style", ("top:" + strafe + "px"));
-    strafe = strafe + 70;
+    
     console.log(strafe);
     
     num++;
@@ -363,11 +363,12 @@ window.onscroll = function() {scrollFunction()};
 <script>
 // script for task #5
 
-/* //var panel = document.getElementById('panel box');
+var panel = document.getElementById('panel box');
 var cube = document.getElementById('cube');
+var margin = 10;
 
-cube.onmousedown = function(e) { // 1. отследить нажатие
-
+function move(e) { // 1. отследить нажатие
+    cube.classList.add("move")
     cube.style.position = 'absolute';
     moveAt(e);
 
@@ -376,26 +377,31 @@ cube.onmousedown = function(e) { // 1. отследить нажатие
     cube.style.zIndex = 1000; // показывать над другими элементами
 
     function moveAt(e) {
-        cube.style.left = e.pageX - cube.offsetWidth / 2 + 'px';
-        cube.style.top = e.pageY - cube.offsetHeight / 2 + 'px';
+        var left = margin;
+        var right = panel.offsetWidth - margin;
+
+        if (e.pageX > 500 || e.pageX < 1000) {
+            cube.style.left = e.pageX - cube.offsetWidth / 2 + 'px';
+        }
+        
+        cube.style.top = e.clientY - cube.offsetHeight / 2 + 'px';
     }
 
     document.onmousemove = function(e) {
         moveAt(e);
+        console.log(e.clientX, e.clientY);
+        console.log(e.pageX, e.pageY);
     }
 
     cube.onmouseup = function() {
         document.onmousemove = null;
         cube.onmouseup = null;
+        cube.classList.remove('move');
     }
 }
-*/
 
 
-
-
-
-
+cube.addEventListener('mousedown', move);
 
 </script>
     </li>
