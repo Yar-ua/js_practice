@@ -52,12 +52,12 @@
                             ID
                         </div>
                     </th>
-                    <th data-field="name" dir="asc">
+                    <th data-field="name">
                         <div class="th-inner sortable both desc">
                             Марка
                         </div>
                     </th>
-                    <th data-field="year" dir="desc">
+                    <th data-field="year">
                         <div class="th-inner sortable both asc">
                             Год выпуска
                         </div>
@@ -136,13 +136,14 @@ function sendAjax (page, sort, dir) {
     hideLoader(false);
     var xhr = new XMLHttpRequest();
 
-    var url = 'http://localhost/ajax.php?page='+page+'&sort='+sort+'&dir='+dir;
+    var url = 'http://main.hz/ajax.php?page='+page+'&sort='+sort+'&dir='+dir;
     xhr.open('GET', url, true);
     xhr.send();
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState != 4) return;
             if (xhr.status != 200) {
+
             console.log(xhr.status + ': ' + xhr.statusText);
         } else {
             setTimeout(function() {hideLoader(true)}, 300);
@@ -193,6 +194,32 @@ function stylePagination(element){
 }
 
 
+// стилизуем значки сортировки на значок по умолчанию
+function dropSortStyle(){
+    sortLabels = document.getElementsByClassName('th-inner sortable both');
+    for (i = 0; i < sortLabels.length; i++){
+        sortLabels[i].setAttribute('class', 'th-inner sortable both');
+    };
+}
+
+
+//выполнение сортировки и отрисовка их значков
+function getSort(point){
+    classElement = point.children[0];
+    klass = classElement.getAttribute('class')
+    dropSortStyle()
+    if (klass == "th-inner sortable both desc" || klass == "th-inner sortable both"){
+        classElement.setAttribute("class", "th-inner sortable both asc")
+        return 'asc';
+    };
+    if (klass == "th-inner sortable both asc"){
+        classElement.setAttribute("class", "th-inner sortable both desc")
+        return 'desc';
+    
+    };
+};
+
+
 // обработчики событий
 // определение коллекции объектов, на которые вешаются обработчики событий
 var pags = document.getElementsByClassName('page-item');
@@ -207,8 +234,10 @@ for (var i = 0; i < pags.length; i++){
 for (var i = 0; i < sortBtn.length; i++){
     sortBtn[i].addEventListener('click', function(){
         sort = this.getAttribute('data-field');
-        dir = this.getAttribute('dir');
-        
+        //dir = this.getAttribute('dir');
+        //console.log(this);
+        dir = getSort(this);
+        console.log(dir);
         localStorage.setItem("sort", sort);
         localStorage.setItem("dir", dir);
         loadPage();
@@ -216,19 +245,16 @@ for (var i = 0; i < sortBtn.length; i++){
 }
 
 
+// действия при загрузке окна
+window.onload = function(event) {
+    if (location.pathname == "/") {
+        location.pathname = "/page1";
+    } else {
+        loadPage();
+    };
 
+};
 
-// действия при загрузке DOM
-document.addEventListener("DOMContentLoaded", function(event) {
-    loadPage();
-
-});
-
-
-/* 
-сделать возможность чередования сортировки
-открытие адреса первый раз по ссылке то отображение адреса и изменение истории посещений
-*/
 
 </script>
 </div>
