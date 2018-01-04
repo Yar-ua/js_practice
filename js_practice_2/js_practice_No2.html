@@ -8,6 +8,11 @@
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     
     <style>
+        .play-right {
+           left: calc(100% - 100px) !important; 
+
+        }
+
         .tasks {
             padding: 20px;
             padding-left: 40px;
@@ -31,12 +36,14 @@
             margin-top: 10px;
         }
         .play{
+            left: 0px;
             width: 100px;
             height: 100px;
             background-color: #369;
             border-radius: 100px;
             position: absolute; 
             top: 120px;
+            transition: left 2s;
         }
         
         .alert {
@@ -81,7 +88,7 @@
         /* */
 
         #icon {
-            display: none; /* Hidden by default */
+            
             position: fixed; /* Fixed/sticky position */
             bottom: 20px; /* Place the button at the bottom of the page */
             right: 30px; /* Place the button 30px from the right */
@@ -173,30 +180,28 @@
         };
 
 
-        var sel = document.getElementById('select_1');
-        var value = document.getElementById("select_1").options.selectedIndex;
-        var text = document.getElementById("select_1").options[value].text;
-        var div = document.getElementById("container")
-
+        var select = document.getElementById('select_1');
+        var selectValue = document.getElementById("select_1").options.selectedIndex;
+        var text = document.getElementById("select_1").options[selectValue].text;
+        
         var newDiv = document.createElement("DIV");
 
-        var textBlock = '<div class="item">' + '<h4>Заголовок #' + i + '</h4>' + '<p>' + text + '</p></div>';
+        var textBlock = '<div class="item">' + '<h4>Заголовок #' + document.getElementById("container").children.length + '</h4>' + '<p>' + text + '</p></div>';
         newDiv.innerHTML = textBlock;
-        i++;
+        //i++;
 
-        
-        if (value == "0") {
-            div.insertBefore(newDiv, div.firstChild);
-        }
-
-        if (value == "1") {
-            div.insertBefore(newDiv, div.children[childCount()]);
-        }
-
-        if (value == "2") {
-            div.appendChild(newDiv);   
-        }
-
+        switch (selectValue) {
+            case 0:
+                document.getElementById("container").insertBefore(newDiv, document.getElementById("container").firstChild);
+                break;
+            case 1:
+                document.getElementById("container").insertBefore(newDiv, document.getElementById("container").children[childCount()]);
+                break;
+            case 2:
+                document.getElementById("container").appendChild(newDiv);
+                break;
+            }
+            
     }
 
 </script>
@@ -209,8 +214,8 @@
 
 
 <!-- <a href="" class="button btn btn-success" >Поехали!</a> -->
-<button class="button btn btn-success" onclick=moveCircle()>Поехали!</button>
-<div class="play" id="circle" style="left: 0px"></div>
+<a href="#" class="button btn btn-success" onclick="return moveCircle()">Поехали!</a>
+<div class="play" id="circle" ></div>
 
 <script>
 // script for task #2
@@ -218,32 +223,13 @@ var j = 0;
 
 function moveCircle() {
         
-    var circle = document.getElementById('circle')
-
-    // определяем по четности параметра j направление движения через положительное или отрицательное значение шага
-    function moveDirection() {
-        if (j % 2 == 0) {
-            return -3;
-        }
-        else {
-            return 3;
-        };
-
+    var circle = document.getElementById('circle');
+    if (circle.classList.contains("play-right")) {
+        circle.classList.remove("play-right");
+    } else {
+        circle.classList.add("play-right")
     }
-
-    // задаем через setInterval интервал изменения позиции
-    var timer = setInterval(function() {
-
-        circle.style.left = parseInt(circle.style.left) + moveDirection() + 'px';
-        
-        // остановить при достижении края экрана менять направление жвижения
-        if ( (parseInt(circle.style.left) > (screen.width-200) ) || (parseInt(circle.style.left) < 0) ) {
-            j++;
-        }
-        //clearInterval(timer);
-
-    }, 20);
-    j++;
+    return false;
 }
 
 </script>
@@ -261,10 +247,10 @@ Alert должен плавно появляться в верхнем прав�
 <input type="text" class="form-control" id="alert-form">
 
 <div id="alert-buttons">
-    <button class="button btn btn-success" value="success">Success</button>
-    <button class="button btn btn-info" value="info">Info</button>
-    <button class="button btn btn-warning" value="warning">Warning</button>
-    <button class="button btn btn-danger" value="danger">Danger</button>
+    <button class="button btn btn-success" alert-class="alert-success">Success</button>
+    <button class="button btn btn-info" alert-class="alert-info">Info</button>
+    <button class="button btn btn-warning" alert-class="alert-warning">Warning</button>
+    <button class="button btn btn-danger" alert-class="alert-danger">Danger</button>
 </div>
 
 
@@ -272,39 +258,53 @@ Alert должен плавно появляться в верхнем прав�
 // script for task #3
 // это для установки id алерта (в случае когда их много)
 var num = 0;
-// для задания стиля алерта top
 
 var btn = document.getElementById('alert-buttons');
+
+function makeAlert(text, title, strafe, klass){
+    var newAlert = document.createElement("DIV");
+    newAlert.setAttribute("id", num);
+    newAlert.setAttribute("class", "fade-in alert " + klass);
+    newAlert.setAttribute("style", "top:" + strafe + "px");
+    //создание блока html
+    var textBlock = '<a href="#" class="close" title="close" onclick="clearTimeout(this.parentNode.timer); this.parentNode.remove(); return false;">&times;</a>' +
+    '<strong>' + title + '!</strong> ' + text + '</div>';
+    // внедряем алерт в dom
+    newAlert.innerHTML = textBlock;
+    document.body.appendChild(newAlert); 
+    // setTimeout(function(){newAlert.remove();}, 3000);
+    newAlert.timer = setTimeout(function(){newAlert.remove();console.log("timer")}, 10000);
+}
 
 // привязываем скрипт к кнопке
 btn.addEventListener('click', function(e){
 
     var button = e.target;
+    
     var text = document.getElementById('alert-form').value;
-    var strafe = window.pageYOffset + num * 70;
+    //var strafe = window.pageYOffset + num * 70;
     //создаю блок с алерт c аттрибутами
-    var newAlert = document.createElement("DIV");
-    newAlert.setAttribute("id", num);
-    newAlert.setAttribute("class", ("fade-in alert alert-" + button.value));
-    newAlert.setAttribute("style", ("top:" + strafe + "px"));
-    
-    console.log(strafe);
-    
-    num++;
+    makeAlert(text, button.innerHTML, getFreeStrafe(), button.getAttribute("alert-class"));
 
-    //создание блока html
-    var textBlock = '<a href="#" class="close" title="close" onclick="this.parentNode.remove()">&times;</a>' +
-    '<strong>' + button.value + '!</strong> ' + text + '</div>';
-
-    // внедряем алерт в dom
-    newAlert.innerHTML = textBlock;
-
-    document.body.appendChild(newAlert); 
-
-    //таймер на изчезание алерта
-    setTimeout(function(){newAlert.remove();}, 10000);
-    
 });
+
+function getFreeStrafe(){
+    var strafe = window.pageYOffset;
+    var list = document.getElementsByClassName("alert")
+    while (list) {
+        var busy = false
+        for (var i = 0; i < list.length; i++){
+            if (parseInt(list[i].style.top) == strafe) {
+                busy = true
+            }
+        }
+        if (busy)
+            strafe = strafe + 90;
+        else 
+            return strafe;
+    }   
+    return strafe;
+}
 
 
 
@@ -317,27 +317,24 @@ btn.addEventListener('click', function(e){
 </h4>
 <br />
 
-<i onclick="up()" id="icon" title="Go to top">Scroll to top</i> 
+<i onclick="up()" id="icon" title="Go to top" class="hidden">Scroll to top</i> 
 
 <script>
 // script for task #4
 
-var t;
+//var t;
 function up() {
-    var top = Math.max(document.body.scrollTop,document.documentElement.scrollTop);
-    if(top > 0) {
-        window.scrollBy(0,-100);
-        t = setTimeout('up()',20);
-    } else clearTimeout(t);
-    return false;
+    window.scrollBy(0,-window.pageYOffset);
 }
 
 function scrollFunction() {
-    var a = screen.height - 500;
-    if (document.body.scrollTop > a || document.documentElement.scrollTop > a) {
-        document.getElementById("icon").style.display = "block";
+    if ((window.pageYOffset + 50) >= window.innerHeight) {
+
+        document.getElementById("icon").classList.remove("hidden");
     } else {
-        document.getElementById("icon").style.display = "none";
+        if (!document.getElementById("icon").classList.contains("hidden")){
+            document.getElementById("icon").classList.add("hidden");
+        }
     }
 }
 
@@ -364,44 +361,66 @@ window.onscroll = function() {scrollFunction()};
 // script for task #5
 
 var panel = document.getElementById('panel box');
-var cube = document.getElementById('cube');
+var cube = cube = document.getElementsByClassName("dragable")
 var margin = 10;
 
-function move(e) { // 1. отследить нажатие
-    cube.classList.add("move")
-    cube.style.position = 'absolute';
-    moveAt(e);
-
-    document.body.appendChild(cube);
-
-    cube.style.zIndex = 1000; // показывать над другими элементами
-
-    function moveAt(e) {
-        var left = margin;
-        var right = panel.offsetWidth - margin;
-
-        if (e.pageX > 500 || e.pageX < 1000) {
-            cube.style.left = e.pageX - cube.offsetWidth / 2 + 'px';
-        }
-        
-        cube.style.top = e.clientY - cube.offsetHeight / 2 + 'px';
-    }
-
-    document.onmousemove = function(e) {
-        moveAt(e);
-        console.log(e.clientX, e.clientY);
-        console.log(e.pageX, e.pageY);
-    }
-
-    cube.onmouseup = function() {
-        document.onmousemove = null;
-        cube.onmouseup = null;
-        cube.classList.remove('move');
-    }
+function getActiveCube(){ 
+    return document.getElementsByClassName('move')[0]
+}
+function moveAt(e, x, y) {
+    if (e == null)
+        return;
+    var left = margin;
+    var right = panel.offsetWidth - margin;
+    e.style.left = x + 'px';
+    e.style.top = y + 'px';
 }
 
+mousemove = function(e) {
+    c = getActiveCube()
+    rect = panel.getBoundingClientRect();    
+    //console.log(rect.top, e.clientY);
+    if( c == null)
+        return;
+    x =  e.clientX - rect.left - c.offsetWidth / 2;
+    y =  e.clientY - rect.top - c.offsetHeight / 2;
+    console.log(x, y);
+    if (x < margin) {
+        x = margin;
+    }
+    if (rect.width - x - c.offsetWidth < margin) {
+        x = rect.right - margin - rect.left - c.offsetWidth;
+    }
+    if (y < margin){
+        y = margin;
+    }
+    if (rect.height - y - c.offsetHeight < margin){
+        y = rect.height - margin - c.offsetHeight;
+    }
+    moveAt(getActiveCube(), x, y);
+    }
 
-cube.addEventListener('mousedown', move);
+mouseup = function(e) {
+    
+    e.target.classList.remove('move');
+}
+
+function mousedown(e) {
+    console.log('move');
+    e.target.classList.add("move")
+    e.target.style.position = 'absolute';
+}
+
+for ( i=0; i< cube.length; i++) {
+    cube[i].addEventListener('mousedown', mousedown);
+    cube[i].addEventListener('touchstart', mousedown);
+
+    cube[i].addEventListener('mouseup', mouseup);
+    cube[i].addEventListener('touchend', mouseup);
+}
+
+panel.addEventListener('mousemove', mousemove);
+panel.addEventListener('touchmove', mousemove);
 
 </script>
     </li>
