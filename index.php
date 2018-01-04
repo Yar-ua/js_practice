@@ -145,8 +145,7 @@ function sendAjax (page, sort, dir) {
             if (xhr.status != 200) {
             console.log(xhr.status + ': ' + xhr.statusText);
         } else {
-               
-            hideLoader(true);
+            setTimeout(function() {hideLoader(true)}, 300);
             clearTable();
             data = JSON.parse(xhr.responseText);
             loadTable(data);
