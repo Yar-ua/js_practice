@@ -273,20 +273,9 @@ function makeAlert(text, title, strafe, klass){
     newAlert.innerHTML = textBlock;
     document.body.appendChild(newAlert); 
     // setTimeout(function(){newAlert.remove();}, 3000);
-    newAlert.timer = setTimeout(function(){newAlert.remove();console.log("timer")}, 10000);
+    newAlert.timer = setTimeout(function(){newAlert.remove();console.log("timer")}, 3000);
 }
 
-// привязываем скрипт к кнопке
-btn.addEventListener('click', function(e){
-
-    var button = e.target;
-    
-    var text = document.getElementById('alert-form').value;
-    //var strafe = window.pageYOffset + num * 70;
-    //создаю блок с алерт c аттрибутами
-    makeAlert(text, button.innerHTML, getFreeStrafe(), button.getAttribute("alert-class"));
-
-});
 
 function getFreeStrafe(){
     var strafe = window.pageYOffset;
@@ -305,6 +294,17 @@ function getFreeStrafe(){
     }   
     return strafe;
 }
+
+
+// привязываем скрипт к кнопке
+btn.addEventListener('click', function(e){
+
+    var button = e.target;
+    var text = document.getElementById('alert-form').value;
+    //создаю блок с алерт c аттрибутами
+    makeAlert(text, button.innerHTML, getFreeStrafe(), button.getAttribute("alert-class"));
+
+});
 
 
 
@@ -427,10 +427,11 @@ panel.addEventListener('touchmove', mousemove);
 </ol>
 <br><br><br>
 
+
 <!--
 <div class="alert alert-success" style="top: 10px">
-  <a href="#" class="close" title="close" onclick="this.parentNode.remove()">&times;</a>
-  <strong>Success!</strong> Indicates a successful or positive action.
+    <a href="#" class="close" title="close" onclick="this.parentNode.remove()">&times;</a>
+    <strong>Success!</strong> Indicates a successful or positive action.
 </div>
 
 <div class="alert alert-info" style="top: 70px">
