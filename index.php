@@ -53,12 +53,12 @@
                         </div>
                     </th>
                     <th data-field="name">
-                        <div class="th-inner sortable both desc">
+                        <div class="th-inner sortable both">
                             Марка
                         </div>
                     </th>
                     <th data-field="year">
-                        <div class="th-inner sortable both asc">
+                        <div class="th-inner sortable both">
                             Год выпуска
                         </div>
                     </th>
@@ -155,18 +155,17 @@ function sendAjax (page, sort, dir) {
 }
 
 // перезагрузка сортировки на всех страницах
-window.onblur = function() {
-    window.onfocus = function(){
-        loadPage();
-    }
-}
+// window.onblur = function() {
+//     window.onfocus = function(){
+//         loadPage();
+//     }
+// }
 
 // получить аякс данные по номеру страницы
 function getPage(e) {
     var page = e.target.innerHTML;
-    history.pushState(page, "New page title", "/page" + page)
+    history.pushState(page, "New page title", "/page" + page +'&sort='+sort+'&dir='+dir);
     stylePagination(page);
-    //sendAjax(page, sort, dir);
     loadPage();
 }
 
@@ -176,7 +175,9 @@ function loadPage() {
     page = location.pathname.split('/')[1].substring(4) || 0
     sort = localStorage.getItem('sort') || 'id'
     dir = localStorage.getItem('dir') || 'asc'
-    sendAjax(page, sort, dir)
+    //history.pushState(page, "New page title", "/page" + page +'&sort='+sort+'&dir='+dir);
+    setSortStyle(sort, dir);
+    sendAjax(page, sort, dir);
 }
 
 
@@ -203,17 +204,23 @@ function dropSortStyle(){
 }
 
 
+function setSortStyle(sort, dir) {
+    qwer = document.querySelector("[data-field=" + sort + "]");
+    qwer.children[0].setAttribute("class", "th-inner sortable both " + dir);
+}
+
+
 //выполнение сортировки и отрисовка их значков
 function getSort(point){
     classElement = point.children[0];
     klass = classElement.getAttribute('class')
     dropSortStyle()
     if (klass == "th-inner sortable both desc" || klass == "th-inner sortable both"){
-        classElement.setAttribute("class", "th-inner sortable both asc")
+        //classElement.setAttribute("class", "th-inner sortable both asc")
         return 'asc';
     };
     if (klass == "th-inner sortable both asc"){
-        classElement.setAttribute("class", "th-inner sortable both desc")
+        //classElement.setAttribute("class", "th-inner sortable both desc")
         return 'desc';
     
     };
@@ -234,10 +241,8 @@ for (var i = 0; i < pags.length; i++){
 for (var i = 0; i < sortBtn.length; i++){
     sortBtn[i].addEventListener('click', function(){
         sort = this.getAttribute('data-field');
-        //dir = this.getAttribute('dir');
-        //console.log(this);
         dir = getSort(this);
-        console.log(dir);
+        //console.log(dir);
         localStorage.setItem("sort", sort);
         localStorage.setItem("dir", dir);
         loadPage();
