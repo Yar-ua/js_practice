@@ -107,20 +107,6 @@
         }
 
 
-
-        /* */
-        @-webkit-keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-
         .fade-in {
             -webkit-animation: fadeIn .5s ease-in 1 forwards;
             animation: fadeIn .5s ease-in 1 forwards;
@@ -131,15 +117,6 @@
             -webkit-animation-play-state: paused;
             animation-play-state: paused;
         }
-
-
-
-        .fade-in {
-            -webkit-animation: fadeIn .5s ease-in 1 forwards;
-            animation: fadeIn .5s ease-in 1 forwards;
-            opacity: 0;
-        }
-
 
     </style>
     
@@ -170,38 +147,30 @@
 
 <script>
 // script for task #1
-    var i = 1;
 
     function taskOne() {
 
         function  childCount() {
-            a = (document.getElementById('container').children.length) / 2;
-            return Math.round(a);
+            return Math.round( (block.children.length) / 2 );
         };
 
-
+        var block = document.getElementById("container");
         var select = document.getElementById('select_1');
-        var selectValue = document.getElementById("select_1").options.selectedIndex;
-        var text = document.getElementById("select_1").options[selectValue].text;
-        
         var newDiv = document.createElement("DIV");
 
-        var textBlock = '<div class="item">' + '<h4>Заголовок #' + document.getElementById("container").children.length + '</h4>' + '<p>' + text + '</p></div>';
-        newDiv.innerHTML = textBlock;
-        //i++;
+        newDiv.innerHTML = '<div class="item">' + '<h4>Заголовок #' + block.children.length + '</h4>' + '<p>' + select.options[select.value].text + '</p></div>';
 
-        switch (selectValue) {
-            case 0:
-                document.getElementById("container").insertBefore(newDiv, document.getElementById("container").firstChild);
+        switch (select.value) {
+            case "0":
+                block.insertBefore(newDiv, block.firstChild);
                 break;
-            case 1:
-                document.getElementById("container").insertBefore(newDiv, document.getElementById("container").children[childCount()]);
+            case "1":
+                block.insertBefore(newDiv, block.children[childCount()]);
                 break;
-            case 2:
-                document.getElementById("container").appendChild(newDiv);
+            case "2":
+                block.appendChild(newDiv);
                 break;
             }
-            
     }
 
 </script>
@@ -219,10 +188,10 @@
 
 <script>
 // script for task #2
-var j = 0;
 
 function moveCircle() {
-        
+
+    // параметр margin для выравнивания края шара    
     var circle = document.getElementById('circle');
     if (circle.classList.contains("play-right")) {
         circle.classList.remove("play-right");
@@ -256,57 +225,39 @@ Alert должен плавно появляться в верхнем прав�
 
 <script>
 // script for task #3
-// это для установки id алерта (в случае когда их много)
-var num = 0;
 
-var btn = document.getElementById('alert-buttons');
+// событие на нажатие кнопки
+document.getElementById('alert-buttons').addEventListener('click', function(button){
+    //создание блока алерт c аттрибутами
+    makeAlert(document.getElementById('alert-form').value, button.target.innerHTML, getFreeStrafe(), button.target.getAttribute("alert-class"));
+});
+
 
 function makeAlert(text, title, strafe, klass){
-    var newAlert = document.createElement("DIV");
-    newAlert.setAttribute("id", num);
-    newAlert.setAttribute("class", "fade-in alert " + klass);
+    var template = document.getElementById("alert-temple");
+    var newAlert = template.cloneNode(true);
+    newAlert.removeAttribute('id', 'alert-temple');
+    newAlert.setAttribute('class', 'alert ' + klass + ' fade in');
     newAlert.setAttribute("style", "top:" + strafe + "px");
-    //создание блока html
-    var textBlock = '<a href="#" class="close" title="close" onclick="clearTimeout(this.parentNode.timer); this.parentNode.remove(); return false;">&times;</a>' +
-    '<strong>' + title + '!</strong> ' + text + '</div>';
-    // внедряем алерт в dom
-    newAlert.innerHTML = textBlock;
+    newAlert.getElementsByTagName('strong')[0].innerText = title;
+    newAlert.getElementsByTagName('span')[0].innerText = text;
+
     document.body.appendChild(newAlert); 
-    // setTimeout(function(){newAlert.remove();}, 3000);
+    newAlert.removeAttribute('hidden');
     newAlert.timer = setTimeout(function(){newAlert.remove();console.log("timer")}, 3000);
 }
 
 
 function getFreeStrafe(){
-    var strafe = window.pageYOffset;
     var list = document.getElementsByClassName("alert")
-    while (list) {
-        var busy = false
-        for (var i = 0; i < list.length; i++){
-            if (parseInt(list[i].style.top) == strafe) {
-                busy = true
-            }
-        }
-        if (busy)
-            strafe = strafe + 90;
-        else 
-            return strafe;
-    }   
+    if (list.length > 0) {
+        lastAlert = list[list.length-1];
+        strafe = parseInt(lastAlert.style.top) + lastAlert.offsetHeight + 10;
+    } else {
+        strafe = window.pageYOffset;
+    }
     return strafe;
 }
-
-
-// привязываем скрипт к кнопке
-btn.addEventListener('click', function(e){
-
-    var button = e.target;
-    var text = document.getElementById('alert-form').value;
-    //создаю блок с алерт c аттрибутами
-    makeAlert(text, button.innerHTML, getFreeStrafe(), button.getAttribute("alert-class"));
-
-});
-
-
 
 </script>
     </li>
@@ -322,13 +273,12 @@ btn.addEventListener('click', function(e){
 <script>
 // script for task #4
 
-//var t;
 function up() {
     window.scrollBy(0,-window.pageYOffset);
 }
 
 function scrollFunction() {
-    if ((window.pageYOffset + 50) >= window.innerHeight) {
+    if ((window.pageYOffset) >= window.innerHeight) {
 
         document.getElementById("icon").classList.remove("hidden");
     } else {
@@ -361,7 +311,7 @@ window.onscroll = function() {scrollFunction()};
 // script for task #5
 
 var panel = document.getElementById('panel box');
-var cube = cube = document.getElementsByClassName("dragable")
+var cube = document.getElementsByClassName("dragable")
 var margin = 10;
 
 function getActiveCube(){ 
@@ -379,7 +329,6 @@ function moveAt(e, x, y) {
 mousemove = function(e) {
     c = getActiveCube()
     rect = panel.getBoundingClientRect();    
-    //console.log(rect.top, e.clientY);
     if( c == null)
         return;
     x =  e.clientX - rect.left - c.offsetWidth / 2;
@@ -401,7 +350,6 @@ mousemove = function(e) {
     }
 
 mouseup = function(e) {
-    
     e.target.classList.remove('move');
 }
 
@@ -429,6 +377,7 @@ panel.addEventListener('touchmove', mousemove);
 
 
 <!--
+
 <div class="alert alert-success" style="top: 10px">
     <a href="#" class="close" title="close" onclick="this.parentNode.remove()">&times;</a>
     <strong>Success!</strong> Indicates a successful or positive action.
@@ -450,7 +399,13 @@ panel.addEventListener('touchmove', mousemove);
 </div>
 -->
 
-
+<div id="div-alerts">
+    <div id="alert-temple" style="width: 400px" hidden >
+      <a href="#" class="close" title="close" onclick="clearTimeout(this.parentNode.timer); this.parentNode.remove(); return false;">&times;</a>
+      <strong>Danger!</strong>
+      <span>Indicates a dangerous or potentially negative action.</span>
+    </div>
+</div>
 
 
 
