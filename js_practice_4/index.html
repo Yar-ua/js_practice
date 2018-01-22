@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Поле с препятствиями</title>
+    
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/game.css">
+    
+</head>
+<body>
+    <!--
+    Клеточка 55px = player.width / 2
+    -->
+
+    <div class="stadium">
+        <div class="track">
+            <div class="player zaec"></div>
+            <div class="barrier yagoda" style="left: 220px;"></div>
+        </div>
+        <div class="track">
+            <div class="player volk"></div>
+            <div class="barrier kamen" style="left: 165px;"></div>
+        </div>
+    </div>
+    <div class="text-center panel-body"><button class="btn btn-success" id="run">Run</button></div>
+
+    <script type="text/javascript" src="js/Barrier.js"></script>
+    <script type="text/javascript" src="js/Runer.js"></script>
+    <script type="text/javascript" src="js/Volk.js"></script>
+    <script type="text/javascript" src="js/Zaec.js"></script>
+
+    <script type="text/javascript" src="js/Game.js"></script>
+
+    
+</body>
+</html>
+
+
+
+
