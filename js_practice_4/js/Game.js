@@ -21,15 +21,23 @@ function Game() {
 
 
 Game.prototype.run = function() {
-	//to do
+	
+    function ifEndGame(){
+        if (zaec.getLeft() >= document.getElementsByClassName('stadium')[0].clientWidth) {
+            alert('заяц добежал');
+            return false;
+        }
+    };
 
-    // выполняем бег зайца и волка
+    //выполняем бег зайца и волка
     zaec.run();
     volk.run();
 
     // перемещаем изображение зайца и волка по треку
-    game.getTrack1().style.left = (zaec.getLeft() * 55) + 'px';
-    game.getTrack2().style.left = (volk.getLeft() * 55) + 'px';
+    game.getTrack1().style.left = zaec.getLeft() + 'px';
+    game.getTrack2().style.left = volk.getLeft() + 'px';
+
+    ifEndGame();
 
 	console.log('console: game run')
 }
@@ -58,11 +66,9 @@ Game.prototype.init = function() {
 
 // если загружена страница то инициализируем игру
 document.addEventListener("DOMContentLoaded", function(){
-
     // создание и инициализация игры при загрузке страницы
     game = new Game();
     game.init();
-
     console.log('page loaded');
 });
 
