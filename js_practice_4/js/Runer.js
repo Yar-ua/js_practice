@@ -28,7 +28,7 @@ function Runner() {
 
 Runner.prototype.run = function() {
 	//to do run
-	this.setLeft(this.getLeft() + this.getSpeed() * strafe);
+	this.setLeft(this.getLeft() + this.getSpeed());
 }
 
 Runner.prototype.init = function() {

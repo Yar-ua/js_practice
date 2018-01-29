@@ -34,6 +34,7 @@ Barrier.prototype.init = function() {
 	function getRandomArbitrary(min, max) {
         return Math.round( Math.random() * (max - min) + min );
     }
+    
     // проверка аффекта и установ картинки
     this.setAffect(getRandomArbitrary(-3, 3));
     if (this.getAffect() >= 0) {
@@ -41,6 +42,8 @@ Barrier.prototype.init = function() {
     } else {
     	this.setImage('kamen');
     };
+
+    
     console.log('affect ' + this.getAffect());
 }
 

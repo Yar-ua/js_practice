@@ -29,23 +29,25 @@ Game.prototype.run = function() {
         zaec.run();
         volk.run();
         // перемещаем изображение зайца и волка по треку
-        zaecPic.style.left = zaec.getLeft() + 'px';
-        volkPic.style.left = volk.getLeft() + 'px';
+        zaecPic.style.left = zaec.getLeft() * strafe + 'px';
+        volkPic.style.left = volk.getLeft() * strafe + 'px';
     }
 
     //инициализировать и сгенерировать хтмл препятствия
     function getHtml(element) {
         var div = document.createElement("DIV");
         div.setAttribute('class', 'barrier ' + element.getImage());
-        div.style.left = element.getAffect() * strafe + 'px';
+        div.style.left = element.getLeft() * strafe + 'px';
         return div;
     };
 
     function showBarrier() {
         barrier1 = new Barrier();
         barrier1.init();
+        barrier1.setLeft(zaec.getLeft() + zaec.getSpeed());
         barrier2 = new Barrier();
         barrier2.init();
+        barrier2.setLeft(volk.getLeft() + volk.getSpeed());
         game.getTrack1().appendChild(getHtml(barrier1));
         game.getTrack2().appendChild(getHtml(barrier2));
     }
