@@ -28,23 +28,23 @@ function Barrier() {
 	};
 };
 
+
 Barrier.prototype.init = function() {
 	//randomly generate the affecte value and corresponding image
 	function getRandomArbitrary(min, max) {
         return Math.round( Math.random() * (max - min) + min );
     }
-
+    // проверка аффекта и установ картинки
     this.setAffect(getRandomArbitrary(-3, 3));
-    
     if (this.getAffect() >= 0) {
     	this.setImage('yagoda');
     } else {
     	this.setImage('kamen');
-    }
-
+    };
     console.log('affect ' + this.getAffect());
 }
 
-Barrier.prototype.destroy = function() {
 
+Barrier.prototype.destroy = function() {
+	delete this;
 }

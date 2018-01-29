@@ -23,38 +23,46 @@ function Game() {
 
 
 Game.prototype.run = function() {
-	
-    // function ifEndGame(){
-    //     if (zaec.getLeft() >= document.getElementsByClassName('stadium')[0].clientWidth) {
-    //         alert('заяц добежал');
-    //         return false;
-    //     }
-    // };
 
     function runRunners() {
-
         //выполняем бег зайца и волка
         zaec.run();
         volk.run();
-
         // перемещаем изображение зайца и волка по треку
         zaecPic.style.left = zaec.getLeft() + 'px';
         volkPic.style.left = volk.getLeft() + 'px';
     }
 
-    function setBarrier() {
-        barrier = new Barrier();
-        barrier.init();
+    //инициализировать и сгенерировать хтмл препятствия
+    function getHtml(element) {
+        var div = document.createElement("DIV");
+        div.setAttribute('class', 'barrier ' + element.getImage());
+        div.style.left = element.getAffect() * strafe + 'px';
+        return div;
+    };
 
-        var barrierDiv = document.createElement("DIV");
-        barrierDiv.setAttribute('class', 'barrier ' + barrier.getImage());
-        barrierDiv.style.left = barrier.getAffect() * strafe + 'px';
-
-        var track1 = document.getElementById('track1');
-        track1.appendChild(barrierDiv);
+    function showBarrier() {
+        barrier1 = new Barrier();
+        barrier1.init();
+        barrier2 = new Barrier();
+        barrier2.init();
+        game.getTrack1().appendChild(getHtml(barrier1));
+        game.getTrack2().appendChild(getHtml(barrier2));
     }
 
-    setBarrier();
+    //удалить все барьеры, если они существуют
+    function removeBarriers() {
+        if (document.querySelector("div.barrier") != null) {
+            do {
+                document.querySelector("div.barrier").remove();
+            } while (document.querySelector("div.barrier").remove() != null)
+        delete barrier1;
+        delete barrier2;
+        }
+    }
+
+    removeBarriers();
+    showBarrier();
     runRunners();
 }
 
