@@ -34,15 +34,15 @@ Barrier.prototype.init = function() {
         return Math.round( Math.random() * (max - min) + min );
     }
 
-    this.setAffect(getRandomArbitrary(-3, 5));
+    this.setAffect(getRandomArbitrary(-3, 3));
     
-    this.setImage('img/yagoda.png')
-
-
+    if (this.getAffect() >= 0) {
+    	this.setImage('yagoda');
+    } else {
+    	this.setImage('kamen');
+    }
 
     console.log('affect ' + this.getAffect());
-
-
 }
 
 Barrier.prototype.destroy = function() {

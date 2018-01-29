@@ -1,7 +1,7 @@
 function Volk() {
 	Runner.call(this);
 
-	this.setImage('img/volk.png');
+	this.setImage('volk');
 	this.setSpeed(Volk.SPEED);
 }
 

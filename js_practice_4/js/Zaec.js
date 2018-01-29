@@ -1,7 +1,7 @@
 function Zaec() {
 	Runner.call(this);
 
-	this.setImage('img/zaec.png');
+	this.setImage('zaec');
 	this.setSpeed(Zaec.SPEED);
 }
 

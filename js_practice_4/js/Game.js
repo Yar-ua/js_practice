@@ -1,3 +1,5 @@
+var strafe = 55;    // по заданию Клеточка 55px = player.width / 2
+
 function Game() {
 	var track1;
 	var track2;
@@ -22,34 +24,38 @@ function Game() {
 
 Game.prototype.run = function() {
 	
-    function ifEndGame(){
-        if (zaec.getLeft() >= document.getElementsByClassName('stadium')[0].clientWidth) {
-            alert('заяц добежал');
-            return false;
-        }
-    };
+    // function ifEndGame(){
+    //     if (zaec.getLeft() >= document.getElementsByClassName('stadium')[0].clientWidth) {
+    //         alert('заяц добежал');
+    //         return false;
+    //     }
+    // };
 
-    //выполняем бег зайца и волка
-    zaec.run();
-    volk.run();
+    function runRunners() {
 
-    // перемещаем изображение зайца и волка по треку
-    game.getTrack1().style.left = zaec.getLeft() + 'px';
-    game.getTrack2().style.left = volk.getLeft() + 'px';
+        //выполняем бег зайца и волка
+        zaec.run();
+        volk.run();
 
-    barrier = new Barrier();
-    barrier.init();
+        // перемещаем изображение зайца и волка по треку
+        zaecPic.style.left = zaec.getLeft() + 'px';
+        volkPic.style.left = volk.getLeft() + 'px';
+    }
 
-    var newDiv = document.createElement("DIV");
-    newDiv.innerHTML = '<div class="barrier yagoda" style="left: ' + barrier.getAffect() * 55 + 'px"></div>'
+    function setBarrier() {
+        barrier = new Barrier();
+        barrier.init();
 
+        var barrierDiv = document.createElement("DIV");
+        barrierDiv.setAttribute('class', 'barrier ' + barrier.getImage());
+        barrierDiv.style.left = barrier.getAffect() * strafe + 'px';
 
-    var track1 = document.getElementById('track1');
-    track1.appendChild(newDiv);
+        var track1 = document.getElementById('track1');
+        track1.appendChild(barrierDiv);
+    }
 
-    //ifEndGame();
-
-	//console.log('console: game run')
+    setBarrier();
+    runRunners();
 }
 
 
@@ -61,13 +67,15 @@ Game.prototype.restart = function() {
 
 Game.prototype.init = function() {
     // инициализируем div'ы с зайцем и волком как track1 track2
-    game.setTrack1(document.getElementsByClassName('player zaec')[0]);
-    game.setTrack2(document.getElementsByClassName('player volk')[0]);
+    game.setTrack1(document.getElementById('track1'));
+    game.setTrack2(document.getElementById('track2'));
 
     // создаем зайца и волка
     zaec = new Zaec();
+    zaecPic = zaec.init();
     volk = new Volk();
-    
+    volkPic = volk.init();
+
     console.log('game init');
 }
     
