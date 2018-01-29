@@ -1,6 +1,6 @@
 function Game() {
-	var track1; // наверное не определяются переменные
-	var track2; // наверное не определяются переменные
+	var track1;
+	var track2;
 
 	this.getTrack1 = function() {
 		return track1;
@@ -37,9 +37,19 @@ Game.prototype.run = function() {
     game.getTrack1().style.left = zaec.getLeft() + 'px';
     game.getTrack2().style.left = volk.getLeft() + 'px';
 
-    ifEndGame();
+    barrier = new Barrier();
+    barrier.init();
 
-	console.log('console: game run')
+    var newDiv = document.createElement("DIV");
+    newDiv.innerHTML = '<div class="barrier yagoda" style="left: ' + barrier.getAffect() * 55 + 'px"></div>'
+
+
+    var track1 = document.getElementById('track1');
+    track1.appendChild(newDiv);
+
+    //ifEndGame();
+
+	//console.log('console: game run')
 }
 
 

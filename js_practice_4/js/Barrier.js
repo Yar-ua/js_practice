@@ -30,6 +30,19 @@ function Barrier() {
 
 Barrier.prototype.init = function() {
 	//randomly generate the affecte value and corresponding image
+	function getRandomArbitrary(min, max) {
+        return Math.round( Math.random() * (max - min) + min );
+    }
+
+    this.setAffect(getRandomArbitrary(-3, 5));
+    
+    this.setImage('img/yagoda.png')
+
+
+
+    console.log('affect ' + this.getAffect());
+
+
 }
 
 Barrier.prototype.destroy = function() {
