@@ -62,10 +62,19 @@ Game.prototype.run = function() {
         }
     }
 
+    // изменить скорость бегуна в зависимости от аффекта барьера
+    function changeSpeed(runner, barrier) {
+        runner.setSpeed(runner.getSpeed() + barrier.getAffect());
+    }
+
+
     removeBarriers();
     barrier1 = setBarrier(zaec, game.getTrack1());
     barrier2 = setBarrier(volk, game.getTrack2());
     runRunners();
+    changeSpeed(zaec, barrier1);
+    changeSpeed(volk, barrier2);
+
 }
 
 

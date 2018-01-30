@@ -32,7 +32,12 @@ function Barrier() {
 Barrier.prototype.init = function() {
 	//randomly generate the affecte value and corresponding image
 	function getRandomArbitrary(min, max) {
-        return Math.round( Math.random() * (max - min) + min );
+		// если выпадет аффект 0 то генерировать еще раз, аффект не может быть 0
+		// для верного задания скорости
+		do {
+			value = Math.ceil( Math.random() * (max - min) + min );
+		} while (value == 0);
+        return value;
     }
     
     // проверка аффекта и установ картинки
