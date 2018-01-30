@@ -41,16 +41,15 @@ Game.prototype.run = function() {
         return div;
     };
 
-    function showBarrier() {
-        barrier1 = new Barrier();
-        barrier1.init();
-        barrier1.setLeft(zaec.getLeft() + zaec.getSpeed());
-        barrier2 = new Barrier();
-        barrier2.init();
-        barrier2.setLeft(volk.getLeft() + volk.getSpeed());
-        game.getTrack1().appendChild(getHtml(barrier1));
-        game.getTrack2().appendChild(getHtml(barrier2));
-    }
+
+    function setBarrier(runner, track) {
+        barrier = new Barrier;
+        barrier.init();
+        barrier.setLeft(runner.getLeft() + runner.getSpeed());
+        track.appendChild(getHtml(barrier));
+        return barrier;
+    };
+
 
     //удалить все барьеры, если они существуют
     function removeBarriers() {
@@ -64,7 +63,8 @@ Game.prototype.run = function() {
     }
 
     removeBarriers();
-    showBarrier();
+    barrier1 = setBarrier(zaec, game.getTrack1());
+    barrier2 = setBarrier(volk, game.getTrack2());
     runRunners();
 }
 
