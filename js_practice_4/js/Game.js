@@ -24,13 +24,39 @@ function Game() {
 
 Game.prototype.run = function() {
 
+    // проверка кто победил
+    function haveWinner() {
+        if (volk.getLeft() >= zaec.getLeft()) {
+            alert('Волк догнал зайца!');
+            return true;
+        };
+        if (zaec.getLeft() * strafe >= track1.clientWidth) {
+            alert('Заяц добежал!');
+            return true;
+        }
+    }
+
+    // блокируем кнопку run на время бега
+    // function blockRunButton(value) {
+    //     switch (value) {
+    //         case true:
+    //             document.getElementById('run').setAttribute('class', 'disabled');
+    //             console.log('disable');
+    //             break;
+    //         case false:
+    //             document.getElementById('run').removeAttribute('disabled');
+    //             console.log('enable');
+    //             break;
+    //     }
+    // }
+
+
+    //выполняем бег зайца и волка
     function runRunners() {
-        //выполняем бег зайца и волка
         zaec.run();
         volk.run();
-        // перемещаем изображение зайца и волка по треку
-        zaecPic.style.left = zaec.getLeft() * strafe + 'px';
-        volkPic.style.left = volk.getLeft() * strafe + 'px';
+        zaec.init().style.left = zaec.getLeft() * strafe + 'px';
+        volk.init().style.left = volk.getLeft() * strafe + 'px';
     }
 
     //инициализировать и сгенерировать хтмл препятствия
@@ -67,20 +93,29 @@ Game.prototype.run = function() {
         runner.setSpeed(runner.getSpeed() + barrier.getAffect());
     }
 
-
+    //blockRunButton(true);
     removeBarriers();
     barrier1 = setBarrier(zaec, game.getTrack1());
     barrier2 = setBarrier(volk, game.getTrack2());
     runRunners();
     changeSpeed(zaec, barrier1);
     changeSpeed(volk, barrier2);
+    if (haveWinner()) {
+        changeActiveButtons('run', 'restart');
+    };
+    //blockRunButton(false);
 
 }
 
 
 Game.prototype.restart = function() {
 	//to do
-    console.log('console: game restart')
+    //removeBarriers();
+    delete zaec;
+    delete volk;
+    game.init();
+    changeActiveButtons('restart', 'run');
+    console.log('console: game restart');
 }
 
 
@@ -91,13 +126,12 @@ Game.prototype.init = function() {
 
     // создаем зайца и волка
     zaec = new Zaec();
-    zaecPic = zaec.init();
     volk = new Volk();
-    volkPic = volk.init();
-
+    
     console.log('game init');
 }
-    
+
+// сделать нормальный рестарт
 
 // +++++++++++++
 
@@ -113,3 +147,13 @@ document.addEventListener("DOMContentLoaded", function(){
 document.getElementById("run").addEventListener('click', function() {
     game.run();
 });
+
+document.getElementById("restart").addEventListener('click', function() {
+    game.restart();
+});
+
+
+function changeActiveButtons(button1, button2){
+    document.getElementById(button1).setAttribute('hidden', '');
+    document.getElementById(button2).removeAttribute('hidden');
+}
