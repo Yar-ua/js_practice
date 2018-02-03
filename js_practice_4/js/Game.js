@@ -36,20 +36,6 @@ Game.prototype.run = function() {
         }
     }
 
-    // блокируем кнопку run на время бега
-    // function blockRunButton(value) {
-    //     switch (value) {
-    //         case true:
-    //             document.getElementById('run').setAttribute('class', 'disabled');
-    //             console.log('disable');
-    //             break;
-    //         case false:
-    //             document.getElementById('run').removeAttribute('disabled');
-    //             console.log('enable');
-    //             break;
-    //     }
-    // }
-
 
     //выполняем бег зайца и волка
     function runRunners() {
