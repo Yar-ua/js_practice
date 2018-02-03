@@ -45,25 +45,16 @@ Game.prototype.run = function() {
         volk.html.style.left = volk.getLeft() * strafe + 'px';
     }
 
-    //инициализировать и сгенерировать хтмл препятствия
-    function getHtml(element) {
-        var div = document.createElement("DIV");
-        div.setAttribute('class', element.constructor.name.toLowerCase() + ' ' + element.getImage());
-        div.style.left = element.getLeft() * strafe + 'px';
-        return div;
-    };
-
 
     // установить барьеры на поле
     function setBarrier(runner, track) {
         barrier = new Barrier;
         barrier.init();
         barrier.setLeft(runner.getLeft() + runner.getSpeed());
-        track.appendChild(getHtml(barrier));
+        barrier.getHtml(barrier.getLeft());
+        track.appendChild(barrier.html);
         return barrier;
     };
-
-
 
 
     // изменить скорость бегуна в зависимости от аффекта барьера
@@ -71,6 +62,7 @@ Game.prototype.run = function() {
         runner.setSpeed(runner.getSpeed() + barrier.getAffect());
     }
 
+//////////////// run
     removeBarriers();
     barrier1 = setBarrier(zaec, game.getTrack1());
     barrier2 = setBarrier(volk, game.getTrack2());
@@ -90,7 +82,7 @@ Game.prototype.restart = function() {
     volk.destroy();
     delete zaec;
     delete volk;
-    removeBarriers()
+    removeBarriers();
     game.init();
     changeActiveButtons('restart', 'run');
     console.log('console: game restart');
@@ -104,18 +96,14 @@ Game.prototype.init = function() {
 
     // создаем зайца и волка
     zaec = new Zaec();
-    zaec.init();
     volk = new Volk();
+    zaec.init();
     volk.init();
     game.getTrack1().appendChild(zaec.html);
     game.getTrack2().appendChild(volk.html)
     
     console.log('game init');
 }
-
-// сделать нормальный рестарт
-
-// +++++++++++++
 
 // если загружена страница то инициализируем игру
 document.addEventListener("DOMContentLoaded", function(){
@@ -125,28 +113,33 @@ document.addEventListener("DOMContentLoaded", function(){
     console.log('page loaded');
 });
 
+
 // бег игроков при нажатии кнопки run
 document.getElementById("run").addEventListener('click', function() {
     game.run();
 });
 
+
+// рестарт по нажатию кнопки
 document.getElementById("restart").addEventListener('click', function() {
     game.restart();
 });
 
 
+// меняем значение кнопки run/restart
 function changeActiveButtons(button1, button2){
     document.getElementById(button1).setAttribute('hidden', '');
     document.getElementById(button2).removeAttribute('hidden');
 }
 
-    //удалить все барьеры, если они существуют
-    function removeBarriers() {
-        if (document.querySelector("div.barrier") != null) {
-            do {
-                document.querySelector("div.barrier").remove();
-            } while (document.querySelector("div.barrier").remove() != null)
+//удалить все барьеры, если они существуют
+function removeBarriers(barrier) {
+    if (typeof barrier1 != 'undefined') {
+        barrier1.destroy();
         delete barrier1;
-        delete barrier2;
-        }
     }
+    if (typeof barrier2 != 'undefined') {
+        barrier2.destroy();
+        delete barrier2;    
+    }
+};

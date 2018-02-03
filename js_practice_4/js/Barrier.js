@@ -39,7 +39,6 @@ Barrier.prototype.init = function() {
 		} while (value == 0);
         return value;
     }
-    
     // проверка аффекта и установ картинки
     this.setAffect(getRandom(-3, 3));
     if (this.getAffect() >= 0) {
@@ -47,12 +46,18 @@ Barrier.prototype.init = function() {
     } else {
     	this.setImage('kamen');
     };
-
-    
     console.log('affect ' + this.getAffect());
+};
+
+
+Barrier.prototype.getHtml = function(value) {
+    var div = document.createElement("DIV");
+    div.setAttribute('class', 'barrier ' + this.getImage());
+    div.style.left = value * strafe + 'px';
+    this.html = div;
 }
 
 
 Barrier.prototype.destroy = function() {
-	delete this;
+	document.getElementsByClassName(this.getImage())[0].remove();
 }
