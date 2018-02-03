@@ -31,7 +31,7 @@ function Barrier() {
 
 Barrier.prototype.init = function() {
 	//randomly generate the affecte value and corresponding image
-	function getRandomArbitrary(min, max) {
+	function getRandom(min, max) {
 		// если выпадет аффект 0 то генерировать еще раз, аффект не может быть 0
 		// для верного задания скорости
 		do {
@@ -41,7 +41,7 @@ Barrier.prototype.init = function() {
     }
     
     // проверка аффекта и установ картинки
-    this.setAffect(getRandomArbitrary(-3, 3));
+    this.setAffect(getRandom(-3, 3));
     if (this.getAffect() >= 0) {
     	this.setImage('yagoda');
     } else {
