@@ -41,19 +41,20 @@ Game.prototype.run = function() {
     function runRunners() {
         zaec.run();
         volk.run();
-        zaec.init().style.left = zaec.getLeft() * strafe + 'px';
-        volk.init().style.left = volk.getLeft() * strafe + 'px';
+        zaec.html.style.left = zaec.getLeft() * strafe + 'px';
+        volk.html.style.left = volk.getLeft() * strafe + 'px';
     }
 
     //инициализировать и сгенерировать хтмл препятствия
     function getHtml(element) {
         var div = document.createElement("DIV");
-        div.setAttribute('class', 'barrier ' + element.getImage());
+        div.setAttribute('class', element.constructor.name.toLowerCase() + ' ' + element.getImage());
         div.style.left = element.getLeft() * strafe + 'px';
         return div;
     };
 
 
+    // установить барьеры на поле
     function setBarrier(runner, track) {
         barrier = new Barrier;
         barrier.init();
@@ -63,23 +64,13 @@ Game.prototype.run = function() {
     };
 
 
-    //удалить все барьеры, если они существуют
-    function removeBarriers() {
-        if (document.querySelector("div.barrier") != null) {
-            do {
-                document.querySelector("div.barrier").remove();
-            } while (document.querySelector("div.barrier").remove() != null)
-        delete barrier1;
-        delete barrier2;
-        }
-    }
+
 
     // изменить скорость бегуна в зависимости от аффекта барьера
     function changeSpeed(runner, barrier) {
         runner.setSpeed(runner.getSpeed() + barrier.getAffect());
     }
 
-    //blockRunButton(true);
     removeBarriers();
     barrier1 = setBarrier(zaec, game.getTrack1());
     barrier2 = setBarrier(volk, game.getTrack2());
@@ -89,16 +80,17 @@ Game.prototype.run = function() {
     if (haveWinner()) {
         changeActiveButtons('run', 'restart');
     };
-    //blockRunButton(false);
 
 }
 
 
 Game.prototype.restart = function() {
 	//to do
-    //removeBarriers();
+    zaec.destroy();
+    volk.destroy();
     delete zaec;
     delete volk;
+    removeBarriers()
     game.init();
     changeActiveButtons('restart', 'run');
     console.log('console: game restart');
@@ -112,7 +104,11 @@ Game.prototype.init = function() {
 
     // создаем зайца и волка
     zaec = new Zaec();
+    zaec.init();
     volk = new Volk();
+    volk.init();
+    game.getTrack1().appendChild(zaec.html);
+    game.getTrack2().appendChild(volk.html)
     
     console.log('game init');
 }
@@ -143,3 +139,14 @@ function changeActiveButtons(button1, button2){
     document.getElementById(button1).setAttribute('hidden', '');
     document.getElementById(button2).removeAttribute('hidden');
 }
+
+    //удалить все барьеры, если они существуют
+    function removeBarriers() {
+        if (document.querySelector("div.barrier") != null) {
+            do {
+                document.querySelector("div.barrier").remove();
+            } while (document.querySelector("div.barrier").remove() != null)
+        delete barrier1;
+        delete barrier2;
+        }
+    }

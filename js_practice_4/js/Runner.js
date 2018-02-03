@@ -33,6 +33,12 @@ Runner.prototype.run = function() {
 
 Runner.prototype.init = function() {
 	//to do run
-	return document.getElementsByClassName('player ' + this.getImage())[0];
+	var div = document.createElement("DIV");
+    div.setAttribute('class', 'player ' + this.getImage());
+    div.style.left = this.getLeft() * strafe + 'px';
+    this.html = div;
+}
 
+Runner.prototype.destroy = function() {
+	document.getElementsByClassName(this.getImage())[0].remove();
 }
