@@ -106,18 +106,6 @@
             background-color: #555; /* Add a dark-grey background on hover */
         }
 
-
-        .fade-in {
-            -webkit-animation: fadeIn .5s ease-in 1 forwards;
-            animation: fadeIn .5s ease-in 1 forwards;
-            opacity: 0;
-        }
-
-        .is-paused {
-            -webkit-animation-play-state: paused;
-            animation-play-state: paused;
-        }
-
     </style>
     
 </head>
@@ -273,8 +261,15 @@ function getFreeStrafe(){
 <script>
 // script for task #4
 
+var t;
 function up() {
-    window.scrollBy(0,-window.pageYOffset);
+    var top = Math.max(document.body.scrollTop,document.documentElement.scrollTop);
+    if(top>0) {
+        window.scrollBy(0, -100);
+        t = setTimeout('up()' , 20);
+        console.log('strafe up!');
+    } else clearTimeout(t);
+    return false;
 }
 
 function scrollFunction() {
