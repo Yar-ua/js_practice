@@ -322,7 +322,7 @@ function moveAt(e, x, y) {
 }
 
 mousemove = function(e) {
-    c = getActiveCube()
+    c = getActiveCube();
     rect = panel.getBoundingClientRect();    
     if( c == null)
         return;
@@ -342,7 +342,7 @@ mousemove = function(e) {
         y = rect.height - margin - c.offsetHeight;
     }
     moveAt(getActiveCube(), x, y);
-    }
+}
 
 mouseup = function(e) {
     e.target.classList.remove('move');
@@ -364,6 +364,13 @@ for ( i=0; i< cube.length; i++) {
 
 panel.addEventListener('mousemove', mousemove);
 panel.addEventListener('touchmove', mousemove);
+
+panel.onmouseleave = function () {
+    c = getActiveCube();
+    if (c != null) {
+        c.classList.remove('move');
+    }
+}
 
 </script>
     </li>
